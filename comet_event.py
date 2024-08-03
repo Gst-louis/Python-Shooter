@@ -1,14 +1,13 @@
 import pygame
 from comet import Comet
 
-# Gerer l'evenement
 class CometFallEvent:
     def __init__(self, game):
         self.percent = 0
         self.percent_speed = 0.01
         self.game = game
 
-        # definir un groupe de sprite pour stocker nos cometes
+        # définir un groupe de sprite pour stocker nos comètes
         self.all_comets = pygame.sprite.Group()
 
     def add_percent(self):
@@ -22,7 +21,6 @@ class CometFallEvent:
     
     def meteor_fall(self):
         self.all_comets.add(Comet(self))
-        
 
     def attempt_fall(self):
         if self.is_full_loaded():
@@ -30,24 +28,20 @@ class CometFallEvent:
             self.reset_percent()
 
     def update_bar(self, surface):
-
         self.add_percent()
+        self.attempt_fall()
 
-        # appel de la méthode qui envoie l'ulti
-        self.attempt_fall( )
-
-        # barre noir de fond
-        pygame.draw.rect(surface, (0,0,0), [
+        # barre noire de fond
+        pygame.draw.rect(surface, (0, 0, 0), [
             0, # x
-            surface.get_height() - 70, #y
+            surface.get_height() - 70, # y
             surface.get_width(), # longueur de la fenêtre
-            10 # epaisseur
+            10 # épaisseur
         ])
         # barre rouge
         pygame.draw.rect(surface, (187, 11, 11), [
             0, # x
-            surface.get_height() - 70, #y
+            surface.get_height() - 70, # y
             (surface.get_width()) * self.percent, # longueur de la fenêtre
-            10 # epaisseur
+            10 # épaisseur
         ])
-

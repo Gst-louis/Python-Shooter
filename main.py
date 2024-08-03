@@ -1,8 +1,9 @@
 import pygame
 from game import Game
+
 pygame.init()
 
-# generer la premiere fenetre
+# générer la première fenêtre
 pygame.display.set_caption("Emrys Shooter")
 screen = pygame.display.set_mode((1920, 1080))
 
@@ -11,14 +12,12 @@ screen.fill(black)
 
 bg = pygame.image.load('assets/bg.jpg')
 
-
-
-# la banniere de jeu
+# la bannière de jeu
 banner = pygame.image.load('assets/banner.png')
 banner_rect = banner.get_rect()
 banner_rect.x = screen.get_width() / 3.5
 
-# import charger notre bouton pour la partie
+# importer et charger notre bouton pour la partie
 play_button = pygame.image.load('assets/button.png')
 play_button = pygame.transform.scale(play_button, (400, 150))
 play_button_rect = play_button.get_rect()
@@ -30,20 +29,19 @@ game = Game()
 running = True
 
 while running:
-
     # appliquer le fond 
     screen.blit(bg, (0, 0))
 
-    # verifier si le jeu a commence dcp
+    # vérifier si le jeu a commencé
     if game.is_playing:
         # lancer le jeu
         game.update(screen)
     else:
-        # ecran de jeu
+        # écran de jeu
         screen.blit(play_button, play_button_rect)
         screen.blit(banner, banner_rect)
     
-    # mettre a jour l'ecran
+    # mettre à jour l'écran
     pygame.display.flip()        
 
     for event in pygame.event.get():
@@ -60,9 +58,7 @@ while running:
         elif event.type == pygame.KEYUP:
             game.pressed[event.key] = False
 
-
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            # souris collision avec le bouton de jeu au debut tsais
+            # souris collision avec le bouton de jeu au début
             if play_button_rect.collidepoint(event.pos):
                 game.start()
-        

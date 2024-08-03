@@ -1,37 +1,45 @@
 import pygame
 
 class AnimateSprite(pygame.sprite.Sprite):
-
-    def __init__(self, sprite_name):
+    def __init__(self, sprite_name, size=(320, 320)):
         super().__init__()
-        self.image = pygame.image.load(f'assets/{sprite_name}.png')
+        self.sprite_name = sprite_name
+        self.size = size
+        self.image = pygame.transform.scale(pygame.image.load(f'assets/{sprite_name}.png'), self.size)
         self.current_image = 0
-        self.animations = {}
-        self.images = self.animations.get(sprite_name)
+        self.animations = self.load_animation_images(sprite_name)
+        self.images = self.animations
+        self.animation = False
 
-    def animate(self):
-        self.current_image+=1
-        if self.current_image >= len(self.images):
-            self.current_image = 0
+    def start_animation(self):
+        self.animation = True
+
+    def animate(self, loop = False):
+        if self.animation:
+            self.current_image += 1
+            if self.current_image >= len(self.images):
+                self.current_image = 0
+                if loop == False:
+                    # desactiver l'animation
+                    self.animation = False
         
         self.image = self.images[self.current_image]
 
-    # charger les images d'un sprite
-    def load_animation_images(sprite_name):
-        # charger les images
+    def load_animation_images(self, sprite_name):
         images = []
-        # recuperer le chemin du dossier pour ce sprite
-        path = f"assets/{sprite_name}/{sprite_name}"
+        path = f"assets/{sprite_name}/"
 
-        # boucler sur chaque image dans le dossier
         for num in range(1, 24):
-            image_path = path + num + '.png'
-            images.append(pygame.image.load(image_path))
-
-        # renvoyer les images
+            image_path = f"{path}{sprite_name}{num}.png"
+            image = pygame.image.load(image_path)
+            image = pygame.transform.scale(image, self.size)
+            images.append(image)
+        
         return images
-    
-        # dictionnaire chaque sprite images
-        self.animations = {
-            'mummy' : load_animation_images('mummy')
+
+    @staticmethod
+    def load_animations():
+        return {
+            'mummy': AnimateSprite.load_animation_images('mummy'),
+            'player': AnimateSprite.load_animation_images('player')
         }

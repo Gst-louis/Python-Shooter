@@ -1,10 +1,10 @@
 import pygame
 from projectile import Projectile
+import animation
 
-# classe pour le joueur
-class Player(pygame.sprite.Sprite):
+class Player(animation.AnimateSprite ):
     def __init__(self, game):
-        super().__init__()
+        super().__init__('player')
         self.game = game
         self.health = 100
         self.max_health = 100
@@ -17,19 +17,19 @@ class Player(pygame.sprite.Sprite):
         self.rect.y = 340
 
     def damage(self, amount):
-        if self.health - amount > amount:
+        if self.health - amount > 0:
             self.health -= amount
         else:
-            # bah si il est mort quoi mdr
             self.game.game_over()
 
+
     def update_health_bar(self, surface):
-        
         pygame.draw.rect(surface, (60, 63, 60), [self.rect.x + 200, self.rect.y + 180, self.max_health, 5])
         pygame.draw.rect(surface, (111, 210, 46), [self.rect.x + 200, self.rect.y + 180, self.health, 5])
     
     def launch_projectile(self):
         self.all_projectiles.add(Projectile(self))
+        self.animate()
 
     def move_right(self):
         if not self.game.check_collision(self, self.game.all_monsters):  
